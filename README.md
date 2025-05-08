@@ -24,8 +24,9 @@ Terraform module to create an IAM user or cross-account IAM role for external Fi
 ```hcl
 module "finops_access" {
   source    = "github.com/elastic2ls-com/terraform-aws-finops-costreview-access"
-  user_name = "custom-finops-user"       # Optional, default: 'finops-review-user'
-  role_name = "custom-finops-role"       # Optional, default: 'FinOpsCostReviewRole' (ignored in this mode)
+  mode      = "iam-user"
+  user_name = "finops-review-user"
+  role_name = "finops-review-role"
 }
 ```
 
@@ -36,11 +37,19 @@ module "finops_access" {
   source                      = "github.com/elastic2ls-com/terraform-aws-finops-costreview-access"
   mode                        = "cross-account-role"
   service_provider_account_id = "123456789012"
+  service_provider_role_name  = "finops-review-role"
+  external_id                 = "your-secure-external-id"     # Optional
   role_name                   = "custom-finops-role"    # Optional, default: 'FinOpsCostReviewRole'
   user_name                   = "custom-finops-user"    # Optional, default: 'finops-review-user' (ignored in this mode)
   attach_organizations_policy = true
 }
 ```
+
+## Security Best Practices
+
+- Use `service_provider_role_name` to limit access to a specific role.
+- Set `external_id` to prevent the confused-deputy problem.
+- Avoid using account root (`arn:aws:iam::<account_id>:root`) as principal.
 
 ---
 

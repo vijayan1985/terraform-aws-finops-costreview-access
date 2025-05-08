@@ -1,4 +1,3 @@
-
 name: Terraform CI
 
 on:
@@ -11,45 +10,57 @@ on:
 
 jobs:
   terraform:
-    name: Terraform Validate, Format, Plan, Security
+    name: Terraform and OpenTofu Validate, Format, Plan, Security
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        cli: [terraform, opentofu]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up Terraform
+        if: matrix.cli == 'terraform'
         uses: hashicorp/setup-terraform@v2
 
-      - name: Terraform Format Check
-        run: terraform fmt -check -recursive
+      - name: Set up OpenTofu
+        if: matrix.cli == 'opentofu'
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: latest
 
-      - name: Terraform Init & Validate (root)
+      - name: Format Check
+        run: ${{ matrix.cli }} fmt -check -recursive
+
+      - name: Init & Validate (root)
         run: |
-          terraform init
-          terraform validate
+          ${{ matrix.cli }} init
+          ${{ matrix.cli }} validate
 
-      - name: Terraform Init & Validate (iam-user example)
+      - name: Init & Validate (iam-user example)
         working-directory: examples/iam-user
         run: |
-          terraform init
-          terraform validate
+          ${{ matrix.cli }} init
+          ${{ matrix.cli }} validate
 
-      - name: Terraform Plan (iam-user example)
+      - name: Plan (iam-user example)
         working-directory: examples/iam-user
-        run: terraform plan -no-color
+        run: ${{ matrix.cli }} plan -no-color
 
-      - name: Terraform Init & Validate (cross-account-role example)
+      - name: Init & Validate (cross-account-role example)
         working-directory: examples/cross-account-role
         run: |
-          terraform init
-          terraform validate
+          ${{ matrix.cli }} init
+          ${{ matrix.cli }} validate
 
-      - name: Terraform Plan (cross-account-role example)
+      - name: Plan (cross-account-role example)
         working-directory: examples/cross-account-role
-        run: terraform plan -no-color
+        run: ${{ matrix.cli }} plan -no-color
 
       - name: Run Checkov (root)
+        if: matrix.cli == 'terraform'
         uses: bridgecrewio/checkov-action@v12
         with:
           directory: .
@@ -57,6 +68,7 @@ jobs:
           soft_fail: true
 
       - name: Run Checkov (iam-user example)
+        if: matrix.cli == 'terraform'
         uses: bridgecrewio/checkov-action@v12
         with:
           directory: examples/iam-user
@@ -64,6 +76,7 @@ jobs:
           soft_fail: true
 
       - name: Run Checkov (cross-account-role example)
+        if: matrix.cli == 'terraform'
         uses: bridgecrewio/checkov-action@v12
         with:
           directory: examples/cross-account-role

@@ -1,0 +1,29 @@
+
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+categories:
+  - title: 'Features'
+    labels:
+      - 'feature'
+  - title: 'Bug Fixes'
+    labels:
+      - 'bug'
+  - title: 'Maintenance'
+    labels:
+      - 'chore'
+      - 'documentation'
+change-template: '- $TITLE (#$NUMBER)'
+no-changes-template: '- No changes'
+
+autolabeler:
+  - label: 'feature'
+    files:
+      - '*.tf'
+      - '*.go'
+  - label: 'documentation'
+    files:
+      - '**/*.md'
+
+template: |
+  ## Changes
+  $CHANGES

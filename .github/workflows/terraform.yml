@@ -1,0 +1,71 @@
+
+name: Terraform CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: Terraform Validate, Format, Plan, Security
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Init & Validate (root)
+        run: |
+          terraform init
+          terraform validate
+
+      - name: Terraform Init & Validate (iam-user example)
+        working-directory: examples/iam-user
+        run: |
+          terraform init
+          terraform validate
+
+      - name: Terraform Plan (iam-user example)
+        working-directory: examples/iam-user
+        run: terraform plan -no-color
+
+      - name: Terraform Init & Validate (cross-account-role example)
+        working-directory: examples/cross-account-role
+        run: |
+          terraform init
+          terraform validate
+
+      - name: Terraform Plan (cross-account-role example)
+        working-directory: examples/cross-account-role
+        run: terraform plan -no-color
+
+      - name: Run Checkov (root)
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: .
+          quiet: true
+          soft_fail: true
+
+      - name: Run Checkov (iam-user example)
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: examples/iam-user
+          quiet: true
+          soft_fail: true
+
+      - name: Run Checkov (cross-account-role example)
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: examples/cross-account-role
+          quiet: true
+          soft_fail: true

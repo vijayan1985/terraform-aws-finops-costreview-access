@@ -1,7 +1,12 @@
+[![Terraform CI](https://github.com/elastic2ls-com/terraform-aws-finops-costreview-access/actions/workflows/terraform.yml/badge.svg)](https://github.com/elastic2ls-com/terraform-aws-finops-costreview-access/actions)
+![License](https://img.shields.io/badge/license-Apache-brightgreen?logo=apache)
+![Status](https://img.shields.io/badge/status-active-brightgreen.svg?logo=git)
+[![Sponsor](https://img.shields.io/badge/sponsors-AlexanderWiechert-blue.svg?logo=github-sponsors)](https://github.com/sponsors/AlexanderWiechert/)
+[![Contact](https://img.shields.io/badge/follow-@Elastic2lscom-blue.svg?logo=facebook&style=social)](https://www.facebook.com/Elastic2lscom-241339337786673/)
+[![Terraform Registry](https://img.shields.io/badge/download-blue.svg?logo=terraform&style=social)](https://registry.terraform.io/modules/elastic2ls-com/finops-costreview-access/aws/latest)
 
 # terraform-aws-finops-costreview-access
 
-[![Terraform CI](https://github.com/elastic2ls-com/terraform-aws-finops-costreview-access/actions/workflows/terraform.yml/badge.svg)](https://github.com/elastic2ls-com/terraform-aws-finops-costreview-access/actions)
 
 Terraform module to create an IAM user or cross-account IAM role for external FinOps cost reviews in an AWS account.
 

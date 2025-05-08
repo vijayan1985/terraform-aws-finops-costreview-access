@@ -2,7 +2,7 @@
 ![License](https://img.shields.io/badge/license-MIT-brightgreen?logo=mit)
 ![Status](https://img.shields.io/badge/status-active-brightgreen.svg?logo=git)
 [![Sponsor](https://img.shields.io/badge/sponsors-AlexanderWiechert-blue.svg?logo=github-sponsors)](https://github.com/sponsors/AlexanderWiechert/)
-[![Contact](https://img.shields.io/badge/follow-@Elastic2lscom-blue.svg?logo=facebook&style=social)](https://www.facebook.com/Elastic2lscom-241339337786673/)
+[![Contact](https://img.shields.io/badge/website-elastic2ls.com-blue.svg?logo=google-chrome)](https://www.elastic2ls.com/)
 [![Terraform Registry](https://img.shields.io/badge/download-blue.svg?logo=terraform&style=social)](https://registry.terraform.io/modules/elastic2ls-com/finops-costreview-access/aws/latest)
 
 # terraform-aws-finops-costreview-access

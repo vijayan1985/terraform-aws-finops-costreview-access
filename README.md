@@ -4,11 +4,13 @@
 [![Sponsor](https://img.shields.io/badge/sponsors-AlexanderWiechert-blue.svg?logo=github-sponsors)](https://github.com/sponsors/AlexanderWiechert/)
 [![Contact](https://img.shields.io/badge/website-elastic2ls.com-blue.svg?logo=google-chrome)](https://www.elastic2ls.com/)
 [![Terraform Registry](https://img.shields.io/badge/download-blue.svg?logo=terraform&style=social)](https://registry.terraform.io/modules/elastic2ls-com/finops-costreview-access/aws/latest)
+[![OpenTofu Compatible](https://img.shields.io/badge/OpenTofu-Compatible-4E9A06?logo=opentofu)
 
 # terraform-aws-finops-costreview-access
 
-
 Terraform module to create an IAM user or cross-account IAM role for external FinOps cost reviews in an AWS account.
+
+This module is compatible with both Terraform (>=1.3) and OpenTofu (>=1.3).
 
 ---
 

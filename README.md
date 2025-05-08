@@ -23,10 +23,11 @@ Terraform module to create an IAM user or cross-account IAM role for external Fi
 
 ```hcl
 module "finops_access" {
-  source    = "github.com/elastic2ls-com/terraform-aws-finops-costreview-access"
-  mode      = "iam-user"
-  user_name = "finops-review-user"
-  role_name = "finops-review-role"
+  source      = "github.com/elastic2ls-com/terraform-aws-finops-costreview-access"
+  mode        = "iam-user"
+  account_id  = "123456789012"
+  user_name   = "finops-review-user"
+  role_name   = "finops-review-role"
 }
 ```
 

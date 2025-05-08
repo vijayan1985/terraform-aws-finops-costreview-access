@@ -43,3 +43,8 @@ variable "attach_organizations_policy" {
   default     = false
 }
 
+variable "account_id" {
+  description = "AWS Account ID where the resources will be created"
+  type        = string
+}
+

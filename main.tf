@@ -1,5 +1,3 @@
-data "aws_caller_identity" "current" {}
-
 resource "aws_iam_user" "this" {
   count = var.mode == "iam-user" ? 1 : 0
   name  = var.user_name
@@ -15,7 +13,7 @@ resource "aws_iam_role" "this" {
       {
         Effect = "Allow",
         Principal = {
-          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/${var.user_name}"
+          AWS = "arn:aws:iam::${var.account_id}:user/${var.user_name}"
         },
         Action = "sts:AssumeRole"
       }
@@ -57,3 +55,4 @@ resource "aws_iam_role_policy_attachment" "organizations_readonly" {
   role       = aws_iam_role.this[0].name
   policy_arn = "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess"
 }
+

